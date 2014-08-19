@@ -1,0 +1,1 @@
+../../JSMessagesViewController/JSMessagesViewController/Classes/Categories/UIImage+JSMessagesView.h

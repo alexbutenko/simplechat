@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>3510AFBC-3A96-4A71-A975-F3AAD9A7354B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SimpleChat</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>78441B81894877150C908A2B0E75D4ED010AD965</key>
+		<string>https://bitbucket.org/sushnz/ios-8-testing-code.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SimpleChat/SimpleChat.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>78441B81894877150C908A2B0E75D4ED010AD965</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://bitbucket.org/sushnz/ios-8-testing-code.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>78441B81894877150C908A2B0E75D4ED010AD965</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>78441B81894877150C908A2B0E75D4ED010AD965</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ios-8-testing-code</string>
+		</dict>
+	</array>
+</dict>
+</plist>

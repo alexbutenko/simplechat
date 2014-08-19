@@ -1,0 +1,1 @@
+../../JSMessagesViewController/JSMessagesViewController/Classes/JSMessageInputView.h
