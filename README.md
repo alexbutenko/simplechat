@@ -1,7 +1,7 @@
 Simplechat
 ==========
 
-![alt tag](https://raw.githubusercontent.com/alexbutenko/simplechat/master/screenshot1.png)
+![alt tag](https://raw.githubusercontent.com/alexbutenko/simplechat/master/screenshot.png)
 
 Simple chat app using CloudKit.
 
