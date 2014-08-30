@@ -1,6 +1,8 @@
 Simplechat
 ==========
 
+![alt tag](https://raw.githubusercontent.com/alexbutenko/simplechat/master/screenshot1.png)
+
 Simple chat app using CloudKit.
 
 1. Create App ID using Apple developer program
