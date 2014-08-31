@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
         println("Received remote notification \(userInfo)")
    
         SyncManager.fetchUpdatedMessages {error in
-            if (!error) {
+            if (nil == error) {
                 println("------\nSYNCED SUCCESSFULLY\n------")
                 completionHandler(.NewData)
             } else {

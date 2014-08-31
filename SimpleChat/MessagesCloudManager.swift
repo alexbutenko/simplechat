@@ -19,7 +19,7 @@ class MessagesCloudManager {
     class func addMessage(text: String, completionHandler: (MessagePlainObject!, NSError!) -> Void) {
         CloudManager.sharedInstance.addMessage(text, buddyRecordName: SenderBuddyDataManager.sharedInstance.persistedBuddy!.serverID) {
             
-            if (!$1) {
+            if ($1 == nil) {
                 println("added message \($0.objectForKey(CloudManager.ModelKeys.MessageValue))")
                 
                 let ownerReference:CKReference = $0.objectForKey(CloudManager.ModelKeys.MessageOwner) as CKReference
@@ -39,7 +39,7 @@ class MessagesCloudManager {
     class func fetchUpdatedMessages(containmentValidationHandler: (serverID:String) -> Bool, completionHandler: ([MessagePlainObject]!, NSError!) -> Void) {
         CloudManager.sharedInstance.queryUpdatedRecordIDs{recordIDs, error in
             
-            if (!error) {
+            if (error == nil) {
                 var filteredIDs = recordIDs.filter {return containmentValidationHandler(serverID: $0.recordName)}
                 
                 println("recordIDs to fetch data \(filteredIDs)")
@@ -52,7 +52,7 @@ class MessagesCloudManager {
     }
     
     class func mapMessagesIntoPlainObjectsIfNeeded(records:[CKRecord]!, error:NSError!, completionHandler:([MessagePlainObject]!, NSError!) -> Void) {
-        if (!error) {
+        if (error == nil) {
             let plainRecords:[MessagePlainObject] = records.map {
                 
                 let ownerReference:CKReference = $0.objectForKey(CloudManager.ModelKeys.MessageOwner) as CKReference

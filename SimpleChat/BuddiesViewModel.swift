@@ -32,7 +32,7 @@ class BuddiesViewModel: NSObject, JSMessagesViewDataSource, JSMessagesViewDelega
         super.init()
                 
         SyncManager.setupWithCompletion{error in
-            if (error) {
+            if (error != nil) {
                 println("SYNC FAILED \(error!)")
             } else {
                 println("------\nSYNCED SUCCESSFULLY\n------")
@@ -104,7 +104,7 @@ class BuddiesViewModel: NSObject, JSMessagesViewDataSource, JSMessagesViewDelega
         //        }
         
         SyncManager.addMessage(text) {error in
-            if (!error) {
+            if (nil == error) {
                 println("added message \(text)")
 
                 if (nil != self.onDidSendMessage) {

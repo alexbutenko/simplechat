@@ -60,7 +60,7 @@ class CloudManager {
             let encodedObjectData = NSUserDefaults.standardUserDefaults().objectForKey(SubscriptionKeys.PreviousChangeToken) as? NSData
             
             if (nil != encodedObjectData) {
-                return NSKeyedUnarchiver.unarchiveObjectWithData(encodedObjectData) as? CKServerChangeToken
+                return NSKeyedUnarchiver.unarchiveObjectWithData(encodedObjectData!) as? CKServerChangeToken
             }
             
             return nil
@@ -69,7 +69,7 @@ class CloudManager {
             if (nil != newToken) {
                 println("new token \(newToken)")
                 
-                NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(newToken), forKey:SubscriptionKeys.PreviousChangeToken)
+                NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(newToken!), forKey:SubscriptionKeys.PreviousChangeToken)
             }
         }
     }
@@ -85,13 +85,13 @@ class CloudManager {
     func requestDiscoverabilityPermission(completionHandler: (Bool, NSError?) -> Void) {
         container.statusForApplicationPermission(.PermissionUserDiscoverability, completionHandler: {status, error in
             
-            if (error) {
+            if (error != nil) {
                 NSLog("statusForApplicationPermission error occured %@", error);
             }
             
             if (status == CKApplicationPermissionStatus.InitialState) {
                 self.container.requestApplicationPermission(.PermissionUserDiscoverability, {status, error in
-                    if (error) {
+                    if (error != nil) {
                         NSLog("requestApplicationPermission error occured %@", error);
                     }
                     
@@ -106,13 +106,13 @@ class CloudManager {
     func discoverUserInfo(completionHandler: (CKDiscoveredUserInfo!, NSError?) -> Void) {
         
         container.fetchUserRecordIDWithCompletionHandler({(recordId: CKRecordID!, error: NSError!) in
-            if (error) {
+            if (error != nil) {
                 NSLog("fetchUserRecordIDWithCompletionHandler error occured %@", error)
                 dispatch_async(dispatch_get_main_queue(), {completionHandler(nil, error)})
                 
             } else {
                 self.container.discoverUserInfoWithUserRecordID(recordId, {userInfo, error in
-                    if (error) {
+                    if (error != nil) {
                         NSLog("discoverUserInfoWithUserRecordID error occured %@", error)
                     }
                     
@@ -135,7 +135,7 @@ class CloudManager {
         }
         
         queryOperation.queryCompletionBlock = {_, error in
-            if (error) {
+            if (error != nil) {
                 println(error)
             }
             
@@ -149,7 +149,7 @@ class CloudManager {
         let recordID = CKRecordID(recordName: recordIDString)
         
         publicDatabase.fetchRecordWithID(recordID, {record, error in
-            if (error) {
+            if (error != nil) {
                 println(error)
             }
             
@@ -178,7 +178,7 @@ class CloudManager {
         record.setObject(ID, forKey: ModelKeys.BuddyID)
 
         publicDatabase.saveRecord(record, {record, error in
-            if (error) {
+            if (error != nil) {
                 NSLog("saveRecord error %@", error)
             }
             
@@ -205,7 +205,7 @@ class CloudManager {
         record.setObject(buddyReference, forKey: ModelKeys.MessageOwner)
         
         publicDatabase.saveRecord(record, {record, error in
-            if (error) {
+            if (error != nil) {
                 NSLog("saveRecord error %@", error)
             }
             
@@ -235,7 +235,7 @@ class CloudManager {
         queryOperation.recordFetchedBlock = {record in messages.append(record)}
         
         queryOperation.queryCompletionBlock = {_, error in
-            if (error) {
+            if (error != nil) {
                 println(error)
             } else {
                 messages.sort{$0.creationDate.compare($1.creationDate) == NSComparisonResult.OrderedAscending}
@@ -253,7 +253,7 @@ class CloudManager {
         var messages:[CKRecord] = []
         
         fetchRecordsOperation.perRecordCompletionBlock = {record, recordID, error in
-            if (!error) {
+            if (error == nil) {
                 messages.append(record)
             } else {
                 println("failed to get message with ID \(recordID.recordName)")
@@ -261,7 +261,7 @@ class CloudManager {
         }
         
         fetchRecordsOperation.fetchRecordsCompletionBlock = {_, error in
-            if (error) {
+            if (error != nil) {
                 println(error)
             } else {
                 messages.sort{$0.creationDate.compare($1.creationDate) == NSComparisonResult.OrderedAscending}
@@ -295,7 +295,7 @@ class CloudManager {
         }
         
         notificationChangesOperation.fetchNotificationChangesCompletionBlock = {serverChangeToken, error in
-            if (error) {
+            if (error != nil) {
                 println("failed to fetch notification \(error)")
             }
             
@@ -317,8 +317,8 @@ class CloudManager {
             subscription.notificationInfo = notification
             
             publicDatabase.saveSubscription(subscription, {subscription, error in
-                if (error) { println("failed to subscribe \(error)") }
-                else if (subscription) {
+                if (error != nil) { println("failed to subscribe \(error)") }
+                else if (subscription != nil) {
                     println("successfully subscribed to message updates \(subscription.subscriptionID)")
                     
                     NSUserDefaults.standardUserDefaults().setBool(true, forKey: SubscriptionKeys.IsSubscribed)
@@ -335,7 +335,7 @@ class CloudManager {
         var subscriptions:[CKSubscription] = []
         
         queryOperation.fetchSubscriptionCompletionBlock = {subscriptionsDictionary, error in
-            if (error) {
+            if (error != nil) {
                 println("failed to fetch subscriptions \(error) , \(subscriptionsDictionary)")
             } else {
                 println("fetched subscriptions \(subscriptionsDictionary)")
@@ -359,7 +359,7 @@ class CloudManager {
         modifyOperation.subscriptionIDsToDelete = subscriptionsID
         
         modifyOperation.modifySubscriptionsCompletionBlock = {savedSubscription, deletedSubscriptionIDs, error in
-            if (error) {
+            if (error != nil) {
                 println("failed to unsubscribe \(error)")
             } else {
                 println("unsubscribed from \(subscriptionsID)")

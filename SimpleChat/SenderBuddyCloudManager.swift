@@ -17,7 +17,7 @@ class SenderBuddyCloudManager {
                 //TODO: could be better to validate if there are persisted values
                 CloudManager.sharedInstance.discoverUserInfo(){userInfo, error in
                     
-                    if (userInfo) {
+                    if (userInfo != nil) {
 //                        NSLog("firstname %@ lastname %@ ID %@", userInfo.firstName, userInfo.lastName, userInfo.userRecordID.recordName)
                         
                         CloudManager.sharedInstance.fetchUserWithID(userInfo.userRecordID.recordName) {buddy in

@@ -10,22 +10,26 @@
 	<string>SimpleChat</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>74D4683E27FD12F15D3B6D61320699DA21B1847A</key>
+		<string>https://github.com/alexbutenko/simplechat.git</string>
 		<key>78441B81894877150C908A2B0E75D4ED010AD965</key>
 		<string>https://bitbucket.org/sushnz/ios-8-testing-code.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>SimpleChat/SimpleChat.xcworkspace</string>
+	<string>SimpleChat.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>74D4683E27FD12F15D3B6D61320699DA21B1847A</key>
+		<string>..</string>
 		<key>78441B81894877150C908A2B0E75D4ED010AD965</key>
-		<string>../..</string>
+		<string>../../ios-8-testing-code</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://bitbucket.org/sushnz/ios-8-testing-code.git</string>
+	<string>https://github.com/alexbutenko/simplechat.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>78441B81894877150C908A2B0E75D4ED010AD965</string>
+	<string>74D4683E27FD12F15D3B6D61320699DA21B1847A</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -35,6 +39,14 @@
 			<string>78441B81894877150C908A2B0E75D4ED010AD965</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ios-8-testing-code</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>74D4683E27FD12F15D3B6D61320699DA21B1847A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SimpleChat</string>
 		</dict>
 	</array>
 </dict>

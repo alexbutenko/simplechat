@@ -13,7 +13,7 @@ class SyncManager {
     class func setupWithCompletion(completionHandler:(NSError!) -> Void) {        
         SenderBuddyCloudManager.setupWithCompletionHandler{sender, error in
             
-            if (sender) {
+            if (sender != nil) {
                 println("SENDER \n\(sender!.name) \(sender!.serverID)")
             
                 //persist user object
@@ -37,7 +37,7 @@ class SyncManager {
     class func fetchBuddiesAndMessages(completionHandler:(NSError!) -> Void) {
         BuddiesCloudManager.fetchBuddiesWithCompletionHandler{buddies, error in
             
-            if (!error) {
+            if (nil == error) {
                 println("BUDDIES")
                 
                 for buddy in buddies {
@@ -63,7 +63,7 @@ class SyncManager {
     
     class func addMessage(text:String, completionHandler:(NSError!) -> Void) {
         MessagesCloudManager.addMessage(text) {messagePlainObject, error in
-            if (!error) {
+            if (nil == error) {
                 MessagesDataManager.sharedInstance.addMessage(messagePlainObject)
             } else {
                 println("error \(error)")
@@ -91,7 +91,7 @@ class SyncManager {
     }
     
     class func handleMessagesWith(messages:[MessagePlainObject]!, error:NSError!, completionHandler:(NSError!) -> Void) {
-        if (!error) {
+        if (nil == error) {
             println("MESSAGES")
             
             for message in messages {
