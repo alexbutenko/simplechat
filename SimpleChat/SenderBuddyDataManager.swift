@@ -24,12 +24,12 @@ class SenderBuddyDataManager {
     
     var persistedBuddy:Buddy?
     
-    func setupWithBuddy(buddy:BuddyPlainObject) {
+    func setup(#buddy:BuddyPlainObject) {
         //check persisted current user
         
         persistedBuddy = Buddy.MR_findFirstByAttribute("serverID", withValue: buddy.serverID) as? Buddy
         
-        if (nil == persistedBuddy) {
+        if persistedBuddy == nil {
             
             println("persisting user \(buddy.name) \(buddy.serverID)")
             persistedBuddy = Buddy.MR_createEntity() as? Buddy

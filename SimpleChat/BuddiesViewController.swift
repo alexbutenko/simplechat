@@ -16,7 +16,7 @@ class BuddiesViewController: JSMessagesViewController {
     
     override func viewDidLoad() {
         viewModel.onDidLoadData = {isInitial in
-            if (isInitial) {
+            if isInitial {
                 self.activityIndicator!.stopAnimating()
                 self.tableView.reloadData()
             }

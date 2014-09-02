@@ -9,39 +9,41 @@
 import Foundation
 
 class SenderBuddyCloudManager {
-    class func setupWithCompletionHandler(completionHandler:(BuddyPlainObject!, NSError!)->Void) {
+    class func setup(#completion:(BuddyPlainObject!, NSError!)->Void) {
         CloudManager.sharedInstance.requestDiscoverabilityPermission({discoverable, error in
-//            println("discoverable \(discoverable)")
+            println("Discoverable: \(discoverable)")
             
-            if (discoverable) {
+            if discoverable {
+                
                 //TODO: could be better to validate if there are persisted values
                 CloudManager.sharedInstance.discoverUserInfo(){userInfo, error in
                     
-                    if (userInfo != nil) {
+                    if userInfo != nil {
 //                        NSLog("firstname %@ lastname %@ ID %@", userInfo.firstName, userInfo.lastName, userInfo.userRecordID.recordName)
                         
                         CloudManager.sharedInstance.fetchUserWithID(userInfo.userRecordID.recordName) {buddy in
 //                            println("buddy \(buddy) userInfo \(userInfo)")
-                            if (nil == buddy) {
+                            if buddy == nil {
                                 println("need to create \(userInfo.firstName)")
 
                                 CloudManager.sharedInstance.addBuddy(userInfo.firstName, ID:userInfo.userRecordID.recordName) {record, error in
                                     
-                                    if (nil == error) {
+                                    if error == nil {
                                         println("created \(userInfo.firstName)")
-                                        completionHandler(BuddyPlainObject(name:userInfo.firstName, serverID:userInfo.userRecordID.recordName), error)
+                                        completion(BuddyPlainObject(name:userInfo.firstName, serverID:userInfo.userRecordID.recordName), error)
                                     }
                                 }
                             } else {
-                                completionHandler(BuddyPlainObject(name:userInfo.firstName, serverID:userInfo.userRecordID.recordName), error)
+                                completion(BuddyPlainObject(name:userInfo.firstName, serverID:userInfo.userRecordID.recordName), error)
                             }
                         }
                     } else {
-                        completionHandler(nil, error)
+                        println("No user info")
+                        completion(nil, error)
                     }
                 }
-            } else if (nil != error) {
-                completionHandler(nil, error)
+            } else if error != nil {
+                completion(nil, error)
             }
         })
     }

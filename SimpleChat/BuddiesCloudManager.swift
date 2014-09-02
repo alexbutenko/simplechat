@@ -9,17 +9,17 @@
 import Foundation
 
 class BuddiesCloudManager {
-    class func fetchBuddiesWithCompletionHandler(completionHandler:([BuddyPlainObject]!, NSError!) -> Void) {
+    class func fetchBuddies(#completion:([BuddyPlainObject]!, NSError!) -> Void) {
         CloudManager.sharedInstance.fetchBuddies{records, error in
-            if (nil == error) {
+            if error == nil {
                 let plainRecords:[BuddyPlainObject] = records.map {
                     return BuddyPlainObject(name: $0.objectForKey(CloudManager.ModelKeys.BuddyName) as String,
                                             serverID: $0.objectForKey(CloudManager.ModelKeys.BuddyID) as String)
                 }
                 
-                completionHandler(plainRecords, nil)
+                completion(plainRecords, nil)
             } else {
-                completionHandler(nil, error)
+                completion(nil, error)
             }
         }
     }

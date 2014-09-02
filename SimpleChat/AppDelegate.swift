@@ -13,7 +13,9 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
                             
     var window: UIWindow?
-
+//    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]) -> Bool {
+//        <#code#>
+//    }
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
         // Override point for customization after application launch.
         application.registerForRemoteNotifications()
@@ -44,12 +46,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
     }
-    
-    func application(application: UIApplication!, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData!) {
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         println("Registered for remote notifications with token \(deviceToken)")
     }
     
-    func application(application: UIApplication!, didFailToRegisterForRemoteNotificationsWithError error: NSError!) {
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
         println("Failed to register for remote notifications \(error)")
     }
     
@@ -69,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
         println("Received remote notification \(userInfo)")
    
         SyncManager.fetchUpdatedMessages {error in
-            if (nil == error) {
+            if error == nil {
                 println("------\nSYNCED SUCCESSFULLY\n------")
                 completionHandler(.NewData)
             } else {

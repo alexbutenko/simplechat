@@ -39,8 +39,8 @@ class MessagesCloudManager {
     class func fetchUpdatedMessages(containmentValidationHandler: (serverID:String) -> Bool, completionHandler: ([MessagePlainObject]!, NSError!) -> Void) {
         CloudManager.sharedInstance.queryUpdatedRecordIDs{recordIDs, error in
             
-            if (error == nil) {
-                var filteredIDs = recordIDs.filter {return containmentValidationHandler(serverID: $0.recordName)}
+            if error == nil {
+                let filteredIDs = recordIDs.filter {return containmentValidationHandler(serverID: $0.recordName)}
                 
                 println("recordIDs to fetch data \(filteredIDs)")
                 
@@ -52,7 +52,7 @@ class MessagesCloudManager {
     }
     
     class func mapMessagesIntoPlainObjectsIfNeeded(records:[CKRecord]!, error:NSError!, completionHandler:([MessagePlainObject]!, NSError!) -> Void) {
-        if (error == nil) {
+        if error == nil {
             let plainRecords:[MessagePlainObject] = records.map {
                 
                 let ownerReference:CKReference = $0.objectForKey(CloudManager.ModelKeys.MessageOwner) as CKReference

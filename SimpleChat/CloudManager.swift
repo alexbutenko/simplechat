@@ -59,14 +59,14 @@ class CloudManager {
         get {
             let encodedObjectData = NSUserDefaults.standardUserDefaults().objectForKey(SubscriptionKeys.PreviousChangeToken) as? NSData
             
-            if (nil != encodedObjectData) {
+            if encodedObjectData != nil {
                 return NSKeyedUnarchiver.unarchiveObjectWithData(encodedObjectData!) as? CKServerChangeToken
             }
             
             return nil
         }
         set(newToken) {
-            if (nil != newToken) {
+            if newToken != nil {
                 println("new token \(newToken)")
                 
                 NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(newToken!), forKey:SubscriptionKeys.PreviousChangeToken)
@@ -82,7 +82,7 @@ class CloudManager {
         return container.publicCloudDatabase
     }
     
-    func requestDiscoverabilityPermission(completionHandler: (Bool, NSError?) -> Void) {
+    func requestDiscoverabilityPermission(completion: (Bool, NSError?) -> Void) {
         container.statusForApplicationPermission(.PermissionUserDiscoverability, completionHandler: {status, error in
             
             if (error != nil) {
@@ -95,20 +95,20 @@ class CloudManager {
                         NSLog("requestApplicationPermission error occured %@", error);
                     }
                     
-                    dispatch_async(dispatch_get_main_queue(), {completionHandler(status == CKApplicationPermissionStatus.Granted, error)})
+                    dispatch_async(dispatch_get_main_queue(), {completion(status == CKApplicationPermissionStatus.Granted, error)})
                 })
             } else {
-                dispatch_async(dispatch_get_main_queue(), {completionHandler(true, error)})
+                dispatch_async(dispatch_get_main_queue(), {completion(true, error)})
             }
         })
     }
     
-    func discoverUserInfo(completionHandler: (CKDiscoveredUserInfo!, NSError?) -> Void) {
+    func discoverUserInfo(completion: (CKDiscoveredUserInfo!, NSError?) -> Void) {
         
         container.fetchUserRecordIDWithCompletionHandler({(recordId: CKRecordID!, error: NSError!) in
             if (error != nil) {
-                NSLog("fetchUserRecordIDWithCompletionHandler error occured %@", error)
-                dispatch_async(dispatch_get_main_queue(), {completionHandler(nil, error)})
+                NSLog("fetchUserRecordIDWithcompletion error occured %@", error)
+                dispatch_async(dispatch_get_main_queue(), {completion(nil, error)})
                 
             } else {
                 self.container.discoverUserInfoWithUserRecordID(recordId, {userInfo, error in
@@ -116,13 +116,13 @@ class CloudManager {
                         NSLog("discoverUserInfoWithUserRecordID error occured %@", error)
                     }
                     
-                    dispatch_async(dispatch_get_main_queue(), {completionHandler(userInfo, error)})
+                    dispatch_async(dispatch_get_main_queue(), {completion(userInfo, error)})
                 })
             }
             })
     }
     
-    func fetchRecordsOfType(type: String, completionHandler: ([CKRecord], NSError!) -> Void) {
+    func fetchRecordsOfType(type: String, completion: ([CKRecord], NSError!) -> Void) {
         var records = [CKRecord]()
         
         let predicate = NSPredicate(value: true)
@@ -139,13 +139,13 @@ class CloudManager {
                 println(error)
             }
             
-            dispatch_async(dispatch_get_main_queue(), {completionHandler(records, error)})
+            dispatch_async(dispatch_get_main_queue(), {completion(records, error)})
         }
         
         publicDatabase.addOperation(queryOperation)
     }
     
-    func fetchRecordWithID(recordIDString: String, completionHandler: (CKRecord, NSError!) -> Void) {
+    func fetchRecordWithID(recordIDString: String, completion: (CKRecord, NSError!) -> Void) {
         let recordID = CKRecordID(recordName: recordIDString)
         
         publicDatabase.fetchRecordWithID(recordID, {record, error in
@@ -153,11 +153,11 @@ class CloudManager {
                 println(error)
             }
             
-            dispatch_async(dispatch_get_main_queue(), {completionHandler(record, error)})
+            dispatch_async(dispatch_get_main_queue(), {completion(record, error)})
             })
     }
     
-    func fetchRecordWithID(recordIDString: String, recordType: String, completionHandler: (CKRecord?) -> Void) {
+    func fetchRecordWithID(recordIDString: String, recordType: String, completion: (CKRecord?) -> Void) {
         fetchRecordsOfType(recordType) {records, error in
 //            println("records \(records)")
             records.filter({record in
@@ -165,15 +165,15 @@ class CloudManager {
             })
             
             if (records.count > 0) {
-                completionHandler(records[0])
+                completion(records[0])
             } else {
-                completionHandler(nil)
+                completion(nil)
             }
         }
     }
     
-    func addBuddy(name: String, ID: String, completionHandler: (CKRecord!, NSError!) -> Void) {
-        var record = CKRecord(recordType: ModelKeys.BuddyType)
+    func addBuddy(name: String, ID: String, completion: (CKRecord!, NSError!) -> Void) {
+        let record = CKRecord(recordType: ModelKeys.BuddyType)
         record.setObject(name, forKey: ModelKeys.BuddyName)
         record.setObject(ID, forKey: ModelKeys.BuddyID)
 
@@ -182,20 +182,20 @@ class CloudManager {
                 NSLog("saveRecord error %@", error)
             }
             
-            dispatch_async(dispatch_get_main_queue(), {completionHandler(record, error)})
+            dispatch_async(dispatch_get_main_queue(), {completion(record, error)})
         })
     }
     
-    func fetchBuddies(completionHandler: ([CKRecord]!, NSError!) -> Void) {
+    func fetchBuddies(completion: ([CKRecord]!, NSError!) -> Void) {
         
-        fetchRecordsOfType(ModelKeys.BuddyType, completionHandler)
+        fetchRecordsOfType(ModelKeys.BuddyType, completion)
     }
     
-    func fetchUserWithID(recordIDString: String, completionHandler: (CKRecord?) -> Void) {
-        fetchRecordWithID(recordIDString, recordType: ModelKeys.BuddyType, completionHandler: completionHandler)
+    func fetchUserWithID(recordIDString: String, completion: (CKRecord?) -> Void) {
+        fetchRecordWithID(recordIDString, recordType: ModelKeys.BuddyType, completion: completion)
     }
     
-    func addMessage(message: String, buddyRecordName:String, completionHandler: (CKRecord!, NSError!) -> Void) {
+    func addMessage(message: String, buddyRecordName:String, completion: (CKRecord!, NSError!) -> Void) {
         var record = CKRecord(recordType: ModelKeys.MessageType)
         record.setObject(message, forKey: ModelKeys.MessageValue)
         
@@ -209,14 +209,14 @@ class CloudManager {
                 NSLog("saveRecord error %@", error)
             }
             
-            dispatch_async(dispatch_get_main_queue(), {completionHandler(record, error)})
+            dispatch_async(dispatch_get_main_queue(), {completion(record, error)})
         })
     }
     
-    func queryMessages(buddyReferenceName:NSString?, completionHandler: ([CKRecord]!, NSError!) -> Void) {
+    func queryMessages(buddyReferenceName:NSString?, completion: ([CKRecord]!, NSError!) -> Void) {
         var predicate = NSPredicate(value: true)
 
-        if (nil != buddyReferenceName) {
+        if buddyReferenceName != nil {
 
             let recordID = CKRecordID(recordName: buddyReferenceName)
             let buddyReference = CKReference(recordID: recordID, action: .None)
@@ -237,23 +237,36 @@ class CloudManager {
         queryOperation.queryCompletionBlock = {_, error in
             if (error != nil) {
                 println(error)
+                if error.code == 11{
+                    //Create record if scheme doesn't exist
+                    println("error occurred on line \(__LINE__) in function \(__FUNCTION__)")
+                    let text = " "
+                    MessagesCloudManager.addMessage(text) {messagePlainObject, error in
+                        if error == nil {
+                            MessagesDataManager.sharedInstance.addMessage(messagePlainObject)
+                        } else {
+                            println("error \(error)")
+                        }
+                    }
+                }
             } else {
                 messages.sort{$0.creationDate.compare($1.creationDate) == NSComparisonResult.OrderedAscending}
+                dispatch_async(dispatch_get_main_queue(), {completion(messages, error)})
             }
             
-            dispatch_async(dispatch_get_main_queue(), {completionHandler(messages, error)})
+            
         }
         
         publicDatabase.addOperation(queryOperation)
     }
     
-    func queryMessagesWithIDs(IDs:[CKRecordID], completionHandler: ([CKRecord]!, NSError!) -> Void) {
+    func queryMessagesWithIDs(IDs:[CKRecordID], completion: ([CKRecord]!, NSError!) -> Void) {
         var fetchRecordsOperation = CKFetchRecordsOperation(recordIDs: IDs)
         
         var messages:[CKRecord] = []
         
         fetchRecordsOperation.perRecordCompletionBlock = {record, recordID, error in
-            if (error == nil) {
+            if error == nil {
                 messages.append(record)
             } else {
                 println("failed to get message with ID \(recordID.recordName)")
@@ -267,7 +280,7 @@ class CloudManager {
                 messages.sort{$0.creationDate.compare($1.creationDate) == NSComparisonResult.OrderedAscending}
             }
             
-            dispatch_async(dispatch_get_main_queue(), {completionHandler(messages, error)})
+            dispatch_async(dispatch_get_main_queue(), {completion(messages, error)})
         }
         
         publicDatabase.addOperation(fetchRecordsOperation)
@@ -275,7 +288,7 @@ class CloudManager {
     
     //Subscribing
     
-    func queryUpdatedRecordIDs(completionHandler:(recordIDs:[CKRecordID], error:NSError!) -> Void) {
+    func queryUpdatedRecordIDs(completion:(recordIDs:[CKRecordID], error:NSError!) -> Void) {
         //request all changes, for case, when some changes are missed
         println("prev change token \(previousChangeToken)")
         
@@ -301,7 +314,7 @@ class CloudManager {
             
             self.previousChangeToken = serverChangeToken
             
-            completionHandler(recordIDs: fetchedRecordIDs, error: error)
+            completion(recordIDs: fetchedRecordIDs, error: error)
         }
         
         container.addOperation(notificationChangesOperation)
@@ -329,7 +342,7 @@ class CloudManager {
         }
     }
     
-    func querySubscriptions(completionHandler: ([NSString]!, NSError!) -> Void) {
+    func querySubscriptions(completion: ([NSString]!, NSError!) -> Void) {
         let queryOperation = CKFetchSubscriptionsOperation.fetchAllSubscriptionsOperation()
         
         var subscriptions:[CKSubscription] = []
@@ -348,7 +361,7 @@ class CloudManager {
                 arrayOfStrings.append(key as NSString)
             }
             
-            completionHandler(arrayOfStrings, error)
+            completion(arrayOfStrings, error)
         }
         
         publicDatabase.addOperation(queryOperation)

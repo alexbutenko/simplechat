@@ -30,20 +30,15 @@ class BuddiesViewModel: NSObject, JSMessagesViewDataSource, JSMessagesViewDelega
     
     override init() {
         super.init()
-                
-        SyncManager.setupWithCompletion{error in
-            if (error != nil) {
+        SyncManager.setup { (error) -> Void in
+            if error != nil {
                 println("SYNC FAILED \(error!)")
             } else {
                 println("------\nSYNCED SUCCESSFULLY\n------")
+                self.buddies = BuddiesDataManager.sharedInstance.persistedBuddies!
+                self.onDidLoadData?(isInitial:true)
             }
-            
-            self.buddies = BuddiesDataManager.sharedInstance.persistedBuddies!
-
-            if (nil != self.onDidLoadData) {
-                self.onDidLoadData!(isInitial:true)
-            }
-        }
+        }        
     }
     
     // MARK : JSMessagesViewDataSource
@@ -104,12 +99,9 @@ class BuddiesViewModel: NSObject, JSMessagesViewDataSource, JSMessagesViewDelega
         //        }
         
         SyncManager.addMessage(text) {error in
-            if (nil == error) {
+            if error == nil {
                 println("added message \(text)")
-
-                if (nil != self.onDidSendMessage) {
-                    self.onDidSendMessage!()
-                }
+                    self.onDidSendMessage?()
             }
         }
     }
@@ -137,7 +129,7 @@ class BuddiesViewModel: NSObject, JSMessagesViewDataSource, JSMessagesViewDelega
     *  @return A `UIImageView` with both `image` and `highlightedImage` properties set.
     *  @see JSBubbleImageViewFactory.
     */
-    
+
     func bubbleImageViewWithType(type: JSBubbleMessageType, forRowAtIndexPath indexPath: NSIndexPath!) -> UIImageView! {
         //synced with |messageTypeForRowAtIndexPath| for testing, should be modified together
         if (0 == indexPath.row % 2) {
@@ -189,7 +181,7 @@ class BuddiesViewModel: NSObject, JSMessagesViewDataSource, JSMessagesViewDelega
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {        
-        if (nil != self.onDidLoadData) {
+        if self.onDidLoadData != nil {
             self.onDidLoadData!(isInitial:false)
         }
         

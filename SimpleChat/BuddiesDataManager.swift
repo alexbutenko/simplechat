@@ -24,25 +24,25 @@ class BuddiesDataManager {
     
     var persistedBuddies:[Buddy]?
     
-    func setupWithBuddies(buddies:[BuddyPlainObject]) {
+    func setup(#buddies:[BuddyPlainObject]) {
         
         persistedBuddies = Buddy.MR_findAll() as? [Buddy]
         
-        if (nil != persistedBuddies) {
+        if persistedBuddies != nil {
             
             var processingBuddies = persistedBuddies!.filter{$0.serverID != SenderBuddyDataManager.sharedInstance.persistedBuddy!.serverID}
             
-            if (processingBuddies.count > 0) {
-                var persistedBuddiesIDs:[String] = [String]()
+            if processingBuddies.count > 0 {
+                var persistedBuddiesIDs:[String] = []
                 
                 for buddy in persistedBuddies! {
                     persistedBuddiesIDs.append(buddy.serverID)
                 }
                 
-                var buddiesToPersist:[BuddyPlainObject] = [BuddyPlainObject]()
+                var buddiesToPersist:[BuddyPlainObject] = []
                 
                 for buddy in buddies {
-                    if (!contains(persistedBuddiesIDs, buddy.serverID)) {
+                    if !contains(persistedBuddiesIDs, buddy.serverID) {
                         buddiesToPersist.append(buddy)
                     }
                 }
