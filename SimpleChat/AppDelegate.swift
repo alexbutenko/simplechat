@@ -13,9 +13,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
                             
     var window: UIWindow?
-//    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]) -> Bool {
-//        <#code#>
-//    }
+
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
         // Override point for customization after application launch.
         application.registerForRemoteNotifications()
@@ -54,18 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIAlertViewDelegate {
         println("Failed to register for remote notifications \(error)")
     }
     
-//    func application(application: UIApplication!, didReceiveRemoteNotification userInfo: NSDictionary!) {
-//        println("Received remote notification \(userInfo)")
-//        
-//        SyncManager.fetchUpdatedMessages {error in
-//            if (!error) {
-//                println("------\nSYNCED SUCCESSFULLY\n------")
-//            } else {
-//                println("SYNC FAILED \(error!)")
-//            }
-//        }
-//    }
-
     func application(application: UIApplication!, didReceiveRemoteNotification userInfo: NSDictionary!, fetchCompletionHandler completionHandler: ((UIBackgroundFetchResult) -> Void)!) {
         println("Received remote notification \(userInfo)")
    
