@@ -27,7 +27,7 @@ class SyncManager {
                 
                 let alert = UIAlertController(title: "Error", message: "Check that you're logged in iCloud to send messages", preferredStyle: .Alert)
                 alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
-                UIApplication.sharedApplication().keyWindow.rootViewController.presentViewController(alert, animated: true, completion: nil)
+                UIApplication.sharedApplication().keyWindow.rootViewController?.presentViewController(alert, animated: true, completion: nil)
             }
             
             self.fetchBuddiesAndMessages(completion)
