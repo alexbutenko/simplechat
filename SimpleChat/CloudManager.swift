@@ -214,7 +214,7 @@ class CloudManager {
     }
     
     func queryMessages(buddyReferenceName:NSString?, completion: ([CKRecord]!, NSError!) -> Void) {
-        var predicate = NSPredicate(value: true)
+        var predicate:NSPredicate? = NSPredicate(value: true)
 
         if buddyReferenceName != nil {
 
@@ -253,8 +253,6 @@ class CloudManager {
                 messages.sort{$0.creationDate.compare($1.creationDate) == NSComparisonResult.OrderedAscending}
                 dispatch_async(dispatch_get_main_queue(), {completion(messages, error)})
             }
-            
-            
         }
         
         publicDatabase.addOperation(queryOperation)
