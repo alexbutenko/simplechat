@@ -85,7 +85,7 @@ class SyncManager {
             
             return messages.count == 0
         }) {
-            self.handleMessagesWith($0, error: $1, completion)
+            self.handleMessagesWith($0, error: $1, completion: completion)
         }
     }
     

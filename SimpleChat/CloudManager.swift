@@ -90,7 +90,7 @@ class CloudManager {
             }
             
             if (status == CKApplicationPermissionStatus.InitialState) {
-                self.container.requestApplicationPermission(.PermissionUserDiscoverability, {status, error in
+                self.container.requestApplicationPermission(.PermissionUserDiscoverability, completionHandler: {status, error in
                     if (error != nil) {
                         NSLog("requestApplicationPermission error occured %@", error);
                     }
@@ -111,7 +111,7 @@ class CloudManager {
                 dispatch_async(dispatch_get_main_queue(), {completion(nil, error)})
                 
             } else {
-                self.container.discoverUserInfoWithUserRecordID(recordId, {userInfo, error in
+                self.container.discoverUserInfoWithUserRecordID(recordId, completionHandler: {userInfo, error in
                     if (error != nil) {
                         NSLog("discoverUserInfoWithUserRecordID error occured %@", error)
                     }
@@ -122,7 +122,7 @@ class CloudManager {
             })
     }
     
-    func fetchRecordsOfType(type: String, completion: ([CKRecord], NSError!) -> Void) {
+    func fetchRecordsOfType(type: String, completion: ([CKRecord]!, NSError!) -> Void) {
         var records = [CKRecord]()
         
         let predicate = NSPredicate(value: true)
@@ -148,7 +148,7 @@ class CloudManager {
     func fetchRecordWithID(recordIDString: String, completion: (CKRecord, NSError!) -> Void) {
         let recordID = CKRecordID(recordName: recordIDString)
         
-        publicDatabase.fetchRecordWithID(recordID, {record, error in
+        publicDatabase.fetchRecordWithID(recordID, completionHandler: {record, error in
             if (error != nil) {
                 println(error)
             }
@@ -161,7 +161,7 @@ class CloudManager {
         fetchRecordsOfType(recordType) {records, error in
 //            println("records \(records)")
             records.filter({record in
-                return record.objectForKey(ModelKeys.BuddyID) as NSString == recordIDString
+                return record.objectForKey(ModelKeys.BuddyID) as? NSString == recordIDString
             })
             
             if (records.count > 0) {
@@ -177,7 +177,7 @@ class CloudManager {
         record.setObject(name, forKey: ModelKeys.BuddyName)
         record.setObject(ID, forKey: ModelKeys.BuddyID)
 
-        publicDatabase.saveRecord(record, {record, error in
+        publicDatabase.saveRecord(record, completionHandler: {record, error in
             if (error != nil) {
                 NSLog("saveRecord error %@", error)
             }
@@ -188,7 +188,7 @@ class CloudManager {
     
     func fetchBuddies(completion: ([CKRecord]!, NSError!) -> Void) {
         
-        fetchRecordsOfType(ModelKeys.BuddyType, completion)
+        fetchRecordsOfType(ModelKeys.BuddyType, completion: completion)
     }
     
     func fetchUserWithID(recordIDString: String, completion: (CKRecord?) -> Void) {
@@ -204,7 +204,7 @@ class CloudManager {
         
         record.setObject(buddyReference, forKey: ModelKeys.MessageOwner)
         
-        publicDatabase.saveRecord(record, {record, error in
+        publicDatabase.saveRecord(record, completionHandler: {record, error in
             if (error != nil) {
                 NSLog("saveRecord error %@", error)
             }
@@ -216,9 +216,9 @@ class CloudManager {
     func queryMessages(buddyReferenceName:NSString?, completion: ([CKRecord]!, NSError!) -> Void) {
         var predicate:NSPredicate? = NSPredicate(value: true)
 
-        if buddyReferenceName != nil {
+        if  let recordBuddyReferenceName = buddyReferenceName {
 
-            let recordID = CKRecordID(recordName: buddyReferenceName)
+            let recordID = CKRecordID(recordName: recordBuddyReferenceName as String)
             let buddyReference = CKReference(recordID: recordID, action: .None)
         
             predicate = NSPredicate(format: "MessageOwner == %@", buddyReference)
@@ -297,7 +297,7 @@ class CloudManager {
         //we just care about inserts, we don't care about of changes of records existing in database, that's why it's enough just to save recordIDs
         notificationChangesOperation.notificationChangedBlock = {notification in
             
-            let queryNotif = notification as CKQueryNotification
+            let queryNotif = notification as! CKQueryNotification
             //            println("fetched  CKQueryNotification \(queryNotif)")
             
             if (!contains(fetchedRecordIDs, queryNotif.recordID)) {
@@ -327,7 +327,7 @@ class CloudManager {
             notification.alertBody = "New message";
             subscription.notificationInfo = notification
             
-            publicDatabase.saveSubscription(subscription, {subscription, error in
+            publicDatabase.saveSubscription(subscription, completionHandler: {subscription, error in
                 if (error != nil) { println("failed to subscribe \(error)") }
                 else if (subscription != nil) {
                     println("successfully subscribed to message updates \(subscription.subscriptionID)")
@@ -356,7 +356,7 @@ class CloudManager {
             var arrayOfStrings:[NSString] = [NSString]()
             
             for key in subscriptionsDictionary.keys {
-                arrayOfStrings.append(key as NSString)
+                arrayOfStrings.append(key as! NSString)
             }
             
             completion(arrayOfStrings, error)

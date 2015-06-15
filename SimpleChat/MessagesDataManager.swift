@@ -57,7 +57,7 @@ class MessagesDataManager {
     
     func createMessage(messagePlainObject:MessagePlainObject) -> Message  {
         println("persisting message \(messagePlainObject.value) \(messagePlainObject.serverID) \(messagePlainObject.ownerID)")
-        var persistedMessage = Message.MR_createEntity() as Message
+        var persistedMessage = Message.MR_createEntity() as! Message
         
         persistedMessage.value = messagePlainObject.value
         persistedMessage.serverID = messagePlainObject.serverID
@@ -73,7 +73,7 @@ class MessagesDataManager {
                 
                 println("message owner \(persistedMessage.owner.name) with ID \(messagePlainObject.ownerID)")
             } else {
-                persistedMessage.owner = Buddy.MR_createEntity() as Buddy
+                persistedMessage.owner = Buddy.MR_createEntity() as! Buddy
                 
                 persistedMessage.owner.name = "Test"
                 persistedMessage.owner.serverID = "0"

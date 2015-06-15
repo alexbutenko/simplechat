@@ -13,8 +13,8 @@ class BuddiesCloudManager {
         CloudManager.sharedInstance.fetchBuddies{records, error in
             if error == nil {
                 let plainRecords:[BuddyPlainObject] = records.map {
-                    return BuddyPlainObject(name: $0.objectForKey(CloudManager.ModelKeys.BuddyName) as String,
-                                            serverID: $0.objectForKey(CloudManager.ModelKeys.BuddyID) as String)
+                    return BuddyPlainObject(name: $0.objectForKey(CloudManager.ModelKeys.BuddyName) as! String,
+                                            serverID: $0.objectForKey(CloudManager.ModelKeys.BuddyID) as! String)
                 }
                 
                 completion(plainRecords, nil)

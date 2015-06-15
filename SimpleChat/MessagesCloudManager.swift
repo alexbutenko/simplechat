@@ -12,7 +12,7 @@ import CloudKit
 class MessagesCloudManager {
     class func fetchMessagesWithCompletionHandler(completionHandler:([MessagePlainObject]!, NSError!) -> Void) {
         CloudManager.sharedInstance.queryMessages(nil) {
-            self.mapMessagesIntoPlainObjectsIfNeeded($0, error: $1, completionHandler)
+            self.mapMessagesIntoPlainObjectsIfNeeded($0, error: $1, completionHandler: completionHandler)
         }
     }
     
@@ -22,9 +22,9 @@ class MessagesCloudManager {
             if ($1 == nil) {
                 println("added message \($0.objectForKey(CloudManager.ModelKeys.MessageValue))")
                 
-                let ownerReference:CKReference = $0.objectForKey(CloudManager.ModelKeys.MessageOwner) as CKReference
+                let ownerReference:CKReference = $0.objectForKey(CloudManager.ModelKeys.MessageOwner) as! CKReference
 
-                let messagePlainObject = MessagePlainObject(value: $0.objectForKey(CloudManager.ModelKeys.MessageValue) as String,
+                let messagePlainObject = MessagePlainObject(value: $0.objectForKey(CloudManager.ModelKeys.MessageValue) as! String,
                                                          serverID: $0.recordID.recordName,
                                                           ownerID: ownerReference.recordID.recordName,
                                                              date: $0.creationDate)
@@ -45,7 +45,7 @@ class MessagesCloudManager {
                 println("recordIDs to fetch data \(filteredIDs)")
                 
                 CloudManager.sharedInstance.queryMessagesWithIDs(filteredIDs) {
-                    self.mapMessagesIntoPlainObjectsIfNeeded($0, error: $1, completionHandler)
+                    self.mapMessagesIntoPlainObjectsIfNeeded($0, error: $1, completionHandler: completionHandler)
                 }
             }
         }
@@ -55,9 +55,9 @@ class MessagesCloudManager {
         if error == nil {
             let plainRecords:[MessagePlainObject] = records.map {
                 
-                let ownerReference:CKReference = $0.objectForKey(CloudManager.ModelKeys.MessageOwner) as CKReference
+                let ownerReference:CKReference = $0.objectForKey(CloudManager.ModelKeys.MessageOwner) as! CKReference
                 
-                return MessagePlainObject(value: $0.objectForKey(CloudManager.ModelKeys.MessageValue) as String,
+                return MessagePlainObject(value: $0.objectForKey(CloudManager.ModelKeys.MessageValue) as! String,
                     serverID: $0.recordID.recordName,
                     ownerID: ownerReference.recordID.recordName,
                     date: $0.creationDate)

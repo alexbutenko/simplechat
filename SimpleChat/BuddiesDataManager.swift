@@ -49,7 +49,7 @@ class BuddiesDataManager {
                 
                 for buddyToPersist in buddiesToPersist {
                     println("persisting user \(buddyToPersist.name) \(buddyToPersist.serverID)")
-                    var persistedBuddy = Buddy.MR_createEntity() as Buddy
+                    var persistedBuddy = Buddy.MR_createEntity() as! Buddy
                     
                     persistedBuddy.name = buddyToPersist.name
                     persistedBuddy.serverID = buddyToPersist.serverID
