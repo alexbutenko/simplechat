@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "74D4683E27FD12F15D3B6D61320699DA21B1847A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "78441B81894877150C908A2B0E75D4ED010AD965" : 0,
+    "74D4683E27FD12F15D3B6D61320699DA21B1847A" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "3510AFBC-3A96-4A71-A975-F3AAD9A7354B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "78441B81894877150C908A2B0E75D4ED010AD965" : "ios-8-testing-code",
+    "74D4683E27FD12F15D3B6D61320699DA21B1847A" : "SimpleChat"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SimpleChat",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SimpleChat.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/alexbutenko\/simplechat.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "74D4683E27FD12F15D3B6D61320699DA21B1847A"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/sushnz\/ios-8-testing-code.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "78441B81894877150C908A2B0E75D4ED010AD965"
+    }
+  ]
+}
